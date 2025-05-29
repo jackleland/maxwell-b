@@ -25,7 +25,7 @@ import unbuffered
 LOG_FORMAT = '[%(asctime)-15s][%(levelname)s][%(module)s][%(funcName)s] %(message)s'
 logging.basicConfig(format=LOG_FORMAT)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
+logger.setLevel(maxwell_config.log_level)
 
 def get_num_gpus():
     pycuda.driver.init()
