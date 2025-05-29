@@ -1,4 +1,8 @@
-FROM nvidia/cuda:10.0-devel
+#####
+# Dockerfile for Maxwell-B Solver
+######
+
+FROM nvidia/cuda:12.9.0-devel-ubuntu24.04
 
 # Do as much installation as possible to make use of caching as installing
 # is very slow.
@@ -9,18 +13,24 @@ RUN apt-get update && \
     apt-get install -y python3-pip \
                        python3-setuptools \
                        libhdf5-serial-dev \
-                       mpich
-
-RUN pip3 install virtualenv
-RUN virtualenv -p python3 pyenv
-
-RUN /pyenv/bin/pip3 install numpy
-RUN /pyenv/bin/pip3 install pycuda jinja2 h5py mpi4py
-RUN /pyenv/bin/pip3 install scipy
-
+                       mpich \
+                       nvidia-driver-535-server \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+    
 WORKDIR /app
+COPY ./requirements.txt /app
+
+# install python packages
+RUN pip install --break-system-packages -r requirements.txt \
+    pip cache purge
+
+# Make symlinks for python and pip
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+# Copy the rest of the application code
 COPY . /app
 
 EXPOSE 9041
 
-CMD ["./start_maxwell_docker"]
+CMD ["./start_maxwell_podman"]

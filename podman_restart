@@ -1,0 +1,4 @@
+#!/bin/bash
+
+podman stop maxwell-monkshood || true
+source podman_run

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Builds and runs maxwell in Docker.
+PORT=9041
+MAXWELL_DOCKER_VOL=maxwell-vol
+MAXWELL_SERVER_FILES=/mnt/maxwell-server-files
+MAXWELL_LOG_LEVEL=debug
+
+podman rm -f maxwell-monkshood || true
+podman run -d -p $PORT:$PORT \
+    --name maxwell-monkshood \
+    --mount type=volume,src=$MAXWELL_DOCKER_VOL,target=$MAXWELL_SERVER_FILES \
+    --mount type=bind,src=/tmp,target=/tmp \
+    --mount type=bind,src=maxwell-server,target=/app/maxwell-server \
+    -e PORT=$PORT \
+    -e MAXWELL_SERVER_FILES="$MAXWELL_SERVER_FILES" \
+    -e MAXWELL_LOG_LEVEL=$MAXWELL_LOG_LEVEL \
+    -e NGPUS=1 \
+    --hooks-dir=/usr/share/containers/oci/hooks.d \
+    --device /dev/nvidia0 \
+    --device /dev/nvidiactl \
+    --device /dev/nvidia-modeset \
+    --device /dev/nvidia-uvm \
+    --device /dev/nvidia-uvm-tools \
+    --env NVIDIA_VISIBLE_DEVICES=all \
+    --env NVIDIA_DRIVER_CAPABILITIES=all \
+    maxwell #tail -f /dev/null
