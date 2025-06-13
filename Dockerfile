@@ -12,6 +12,7 @@ FROM nvidia/cuda:12.9.0-devel-ubuntu24.04
 RUN apt-get update && \
     apt-get install -y python3-pip \
                        python3-setuptools \
+                       build-essential \
                        libhdf5-serial-dev \
                        mpich \
                        nvidia-driver-535-server \
