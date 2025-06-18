@@ -1,0 +1,6 @@
+Bootstrap: docker
+From: ghcr.io/jackleland/maxwell-b:latest
+
+%startscript
+    echo "Starting container..."
+    ./start_maxwell_podman > instance.log 2>&1
