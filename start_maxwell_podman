@@ -1,3 +1,11 @@
 #!/bin/bash -e
-python3 maxwell-server/simserver.py $NGPUS &> simserver.log &
-python3 maxwell-server/webserver.py $PORT  &> webserver.log
+pwd
+
+echo "changing to Maxwell server directory"
+cd /app/maxwell-server
+
+echo "starting simserver"
+python3 simserver.py $NGPUS &> simserver.log &
+
+echo "starting webserver"
+python3 webserver.py $PORT  &> webserver.log
