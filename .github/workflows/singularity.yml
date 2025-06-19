@@ -14,23 +14,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Apptainer
         uses: eWaterCycle/setup-apptainer@v2
         with:
           apptainer-version: 1.4.1
-
       - name: Install ORAS CLI
         run: |
           curl -LO https://github.com/oras-project/oras/releases/download/v1.1.0/oras_1.1.0_linux_amd64.tar.gz
           tar -xzf oras_1.1.0_linux_amd64.tar.gz
           sudo mv oras /usr/local/bin/
           oras version
-
+      - name: Free up disk space
+        uses: jlumbroso/free-disk-space@main
       - name: Build Singularity image
         run: |
           apptainer build maxwell-b.sif Singularity.def
-
       - name: Push SIF to GHCR using ORAS
         run: |
           oras push ghcr.io/owner/maxwell-b:sing-latest \
