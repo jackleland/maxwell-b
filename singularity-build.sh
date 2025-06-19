@@ -7,5 +7,5 @@
 
 SINGULARITY_CACHEDIR=$TMPDIR SINGULARITY_TMPDIR=$TMPDIR singularity build --sandbox $SCRATCH/maxwell-b-sandbox docker://ghcr.io/jackleland/maxwell-b:latest
 
-cp -r $SCRATCH/maxwell-b-sandbox/maxwell-b-sandbox  $DATA/singularity/maxwell-b-sandbox
+cp -r $SCRATCH/maxwell-b-sandbox $DATA/singularity/maxwell-b-sandbox
 rm -rf $SCRATCH/maxwell-b-sandbox

@@ -7,13 +7,13 @@ export MAXWELL_SINGULARITY_VOL="$SCRATCH/.singularity/maxwell-vol"
 export MAXWELL_SERVER_FILES="/mnt/maxwell-server-files"
 export MAXWELL_LOG_LEVEL="debug"
 export NGPUS=1
-export IMAGE_PATH="$DATA/singularity/maxwell-b.sif"
+export IMAGE_PATH="$DATA/singularity/maxwell-b-sandbox"
 export WORKING_DIR="."
 
 # ensure the volume dir exists
 mkdir -p "$MAXWELL_SINGULARITY_VOL"
 
-singularity instance start \
+mpirun singularity instance start \
     --nv \
     -B "$MAXWELL_SINGULARITY_VOL":"$MAXWELL_SERVER_FILES, $TMPDIR:/tmp, $WORKING_DIR:/app" \
     --env PORT="$PORT" \
@@ -21,12 +21,3 @@ singularity instance start \
     --env MAXWELL_LOG_LEVEL="$MAXWELL_LOG_LEVEL" \
     --env NGPUS="$NGPUS" \
     "$IMAGE_PATH" maxwell-b
-singularity exec \
-    --nv \
-    --env PORT="$PORT" \
-    --env MAXWELL_SERVER_FILES="$MAXWELL_SERVER_FILES" \
-    --env MAXWELL_LOG_LEVEL="$MAXWELL_LOG_LEVEL" \
-    --env NGPUS="$NGPUS" \
-    instance://maxwell-b \
-    bash -c \
-    "/opt/nvidia/nvidia_entrypoint.sh ./start_maxwell_podman > instance.log 2>&1"
