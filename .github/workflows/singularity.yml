@@ -31,7 +31,7 @@ jobs:
           apptainer build maxwell-b.sif Singularity.def
       - name: Push SIF to GHCR using ORAS
         run: |
-          oras push ghcr.io/owner/maxwell-b:sing-latest \
+          oras push ghcr.io/${{ github.repository_owner }}/maxwell-b:sing-latest \
             --annotation "org.opencontainers.image.title=maxwell-b.sif" \
             --annotation "org.opencontainers.image.description=Singularity version of maxwell-b" \
             --username ${{ github.actor }} \
