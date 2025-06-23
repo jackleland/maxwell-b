@@ -5,7 +5,7 @@
 #SBATCH --time=2:00:00
 #SBATCH --partition=short
 
-SINGULARITY_CACHEDIR=$TMPDIR SINGULARITY_TMPDIR=$TMPDIR singularity build --sandbox $SCRATCH/maxwell-b-sandbox docker://ghcr.io/jackleland/maxwell-b:latest
+SINGULARITY_CACHEDIR=$TMPDIR SINGULARITY_TMPDIR=$TMPDIR singularity pull $SCRATCH/maxwell-b.sif docker://ghcr.io/jackleland/maxwell-b:sing-latest
 
-cp -r $SCRATCH/maxwell-b-sandbox $DATA/singularity/maxwell-b-sandbox
-rm -rf $SCRATCH/maxwell-b-sandbox
+cp -r $SCRATCH/maxwell-b.sif $DATA/singularity/maxwell-b.sif
+rm -rf $SCRATCH/maxwell-b.sif
